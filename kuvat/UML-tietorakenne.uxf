@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>70</x>
+      <y>480</y>
+      <w>210</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>Resepti
+--
+- id: int
+- &lt;&lt;get/set&gt;&gt; ruokalaji: int
+- &lt;&lt;get/set&gt;&gt; nimi: String
+- &lt;&lt;get/set&gt;&gt; tekijä: String
+- &lt;&lt;get/set&gt;&gt; alkuperämaa: String
+- &lt;&lt;get/set&gt;&gt; ohje: String
+- &lt;&lt;get/set&gt;&gt; ainesosat: Ainesosa
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>480</y>
+      <w>120</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Ainesosa
+--
+- id: int
+- nimi: String
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>200</y>
+      <w>210</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>Rekisteri
+--
+- reseptit: Resepti
+- ainesosat: Ainesosa
+--
++ lisääResepti(r: Resepti): void
++ poistaResepti(i: int): Resepti
++ tallennaReseptit(): void
++ haeTiedot(): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>220</x>
+      <y>330</y>
+      <w>40</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=*</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>330</y>
+      <w>40</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=12</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>270</x>
+      <y>510</y>
+      <w>140</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=*
+m2=*</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+</diagram>

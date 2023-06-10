@@ -27,7 +27,7 @@
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnHome" mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Avaa kirja" />
+            <Button fx:id="btnHome" mnemonicParsing="false" onAction="#openMain" prefHeight="50.0" prefWidth="150.0" text="Avaa kirja" />
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
