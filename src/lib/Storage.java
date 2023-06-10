@@ -15,9 +15,10 @@ import java.util.Scanner;
  *
  */
 public class Storage {
-    private final String RECIPES_FILE = "recipes.dat";
-    private final String INGREDIENTS_FILE = "ingredients.dat";
-    private final String RELATION_FILE = "relation.dat";
+    private final String DIR = System.getProperty("user.dir").toString() + "\\src\\data\\";
+    private final String RECIPES_FILE = DIR + "recipes.dat";
+    private final String INGREDIENTS_FILE = DIR + "ingredients.dat";
+    private final String RELATION_FILE = DIR + "relation.dat";
     private Scanner sc;
     
     private static Storage storage = null;
@@ -47,19 +48,30 @@ public class Storage {
     }
     
     /**
-     * 
+     * Loads data from data files.
      */
     public void loadData() {
-        File f = new File(RECIPES_FILE);
-        if (!f.exists())
+        loadFile(RECIPES_FILE);
+        loadFile(INGREDIENTS_FILE);
+        loadFile(RELATION_FILE);
+    }
+    
+    /**
+     * @param file to be loaded from
+     * 
+     */
+    public void loadFile(String file) {
+        File f = new File(file);
+        if (!f.exists()) {
             try {
                 f.createNewFile();
-                System.out.printf("File created at: %s\n", f.getAbsoluteFile());
+                System.out.printf("New file created at: %s\n", f.getAbsoluteFile());
                 return;
             } catch (IOException e) {
                 System.out.println("Error creating new file");
                 e.printStackTrace();
             }
+        } else System.out.printf("File path: %s\n", f.getAbsolutePath());
         try {
             sc = new Scanner(f);
         } catch (FileNotFoundException e) {
@@ -67,7 +79,7 @@ public class Storage {
             e.printStackTrace();
             return;
         }
-        System.out.println("Loading recipes from file...");
+        System.out.println("Loading from file " + f.getName());
         int count = 0;
         while (sc.hasNextLine()) {
             count++;
@@ -76,6 +88,7 @@ public class Storage {
             // TODO: get data from .dat-files and if necessary, create .dat-files.
         }
         System.out.printf("Loaded %d lines\n", count);
+        sc.close();
     }
     
     public void saveData() {
