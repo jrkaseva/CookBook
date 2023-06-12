@@ -71,7 +71,7 @@ public class MenuController {
 
     @FXML
     void info(ActionEvent event) {
-        //
+        System.out.println("Menusta valittu info");
     }
 
     @FXML

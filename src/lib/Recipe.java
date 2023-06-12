@@ -3,6 +3,8 @@
  */
 package lib;
 
+import java.util.ArrayList;
+
 /**
  * @author tietokone
  * @version 6.6.2023
@@ -14,8 +16,9 @@ public class Recipe {
     private String name;
     private String creator;
     private String origin;
-    private int course;
+    private String course;
     private String guide;
+    private ArrayList<Ingredient> ingredients;
     
     /**
      * default constructor
@@ -29,8 +32,9 @@ public class Recipe {
      * @param origin country
      * @param course 0 = appetizer, 1 = main, 2 = dessert
      * @param guide to follow
+     * @param ingredients of course
      */
-    public Recipe(int id, String name, String creator, String origin, int course, String guide) {
+    public Recipe(int id, String name, String creator, String origin, String course, String guide, ArrayList<Ingredient> ingredients) {
         if (id == -1) {            
             this.id = next_id;
             next_id++;
@@ -38,51 +42,29 @@ public class Recipe {
             this.id = id;
         }
         this.name = name.trim();
-        this.creator = creator.trim();
-        this.origin = origin.trim();
-        this.course = course;
+        this.setCreator(creator.trim());
+        this.setOrigin(origin.trim());
+        this.setCourse(course);
         this.guide = guide.trim();
+        this.setIngredients(ingredients);
     }
     
     @Override
     public String toString() {
         // TODO: format as id|name|creator|origin|course|guide
-        return id + " | " + name;
+        return String.format("%d | %s | %s | %s | %s | %s", id, name, creator, origin, course, guide);
     }
     
     /**
      * Prints the guide to console
      */
     public void printRecipe() {
-        System.out.println(guide);
-    }
-
-    /**
-     * @return the creator
-     */
-    public String getCreator() {
-        return creator;
-    }
-
-    /**
-     * @return the origin
-     */
-    public String getOrigin() {
-        return origin;
-    }
-
-    /**
-     * @return the course
-     */
-    public int getCourse() {
-        return course;
-    }
-
-    /**
-     * @return the guide
-     */
-    public String getGuide() {
-        return guide;
+        System.out.printf("%s: (%s, %s) [%s]\n\n", name, creator, origin, course);
+        System.out.printf("Ainesosat:\n");
+        for (Ingredient i : ingredients) {
+            System.out.printf("\t%s\n", i.toString());
+        }
+        System.out.println("\n" + guide);
     }
 
     /**
@@ -97,6 +79,62 @@ public class Recipe {
      */
     public void setNextId(int previous_id) {
         next_id = previous_id + 1;
+    }
+
+    /**
+     * @return the ingredients
+     */
+    public ArrayList<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    /**
+     * @param ingredients the ingredients to set
+     */
+    public void setIngredients(ArrayList<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    /**
+     * @return the creator
+     */
+    public String getCreator() {
+        return creator;
+    }
+
+    /**
+     * @param creator the creator to set
+     */
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    /**
+     * @return the origin
+     */
+    public String getOrigin() {
+        return origin;
+    }
+
+    /**
+     * @param origin the origin to set
+     */
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    /**
+     * @return the course
+     */
+    public String getCourse() {
+        return course;
+    }
+
+    /**
+     * @param course the course to set
+     */
+    public void setCourse(String course) {
+        this.course = course;
     }
     
     
