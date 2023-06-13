@@ -4,66 +4,68 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>70</x>
-      <y>480</y>
-      <w>210</w>
-      <h>160</h>
+      <x>490</x>
+      <y>590</y>
+      <w>220</w>
+      <h>170</h>
     </coordinates>
-    <panel_attributes>Resepti
+    <panel_attributes>Recipe
 --
 - id: int
-- &lt;&lt;get/set&gt;&gt; ruokalaji: int
-- &lt;&lt;get/set&gt;&gt; nimi: String
-- &lt;&lt;get/set&gt;&gt; tekijä: String
-- &lt;&lt;get/set&gt;&gt; alkuperämaa: String
-- &lt;&lt;get/set&gt;&gt; ohje: String
-- &lt;&lt;get/set&gt;&gt; ainesosat: Ainesosa
---</panel_attributes>
+- &lt;&lt;get/set&gt;&gt; course: String
+- &lt;&lt;get/set&gt;&gt; name: String
+- &lt;&lt;get/set&gt;&gt; creator: String
+- &lt;&lt;get/set&gt;&gt; origin: String
+- &lt;&lt;get/set&gt;&gt; guide: String
+- &lt;&lt;get/set&gt;&gt; ingredients: Ingredient
+--
+_+ parse(s: String): Recipe_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>390</x>
-      <y>480</y>
-      <w>120</w>
-      <h>80</h>
+      <x>820</x>
+      <y>590</y>
+      <w>190</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>Ainesosa
+    <panel_attributes>Ingredient
 --
 - id: int
-- nimi: String
---</panel_attributes>
+- name: String
+--
+_+ parse(s: String): Ingredient_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>220</x>
-      <y>200</y>
+      <x>640</x>
+      <y>310</y>
       <w>210</w>
       <h>140</h>
     </coordinates>
-    <panel_attributes>Rekisteri
+    <panel_attributes>Storage
 --
-- reseptit: Resepti
-- ainesosat: Ainesosa
+- recipes: Recipe
+- ingredients: Ingredient
 --
-+ lisääResepti(r: Resepti): void
-+ poistaResepti(i: int): Resepti
-+ tallennaReseptit(): void
-+ haeTiedot(): void</panel_attributes>
++ addRecipe(r: Recipe): void
++ removeRecipe(i: int): Recipe
++ saveData(): void
++ loadData(): void</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>330</y>
+      <x>640</x>
+      <y>440</y>
       <w>40</w>
       <h>170</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=*</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
@@ -71,12 +73,12 @@ m2=*</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>330</y>
+      <x>820</x>
+      <y>440</y>
       <w>40</w>
       <h>170</h>
     </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
 m1=1
 m2=12</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
@@ -84,14 +86,48 @@ m2=12</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>270</x>
-      <y>510</y>
+      <x>700</x>
+      <y>630</y>
       <w>140</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-
 m1=*
-m2=*</panel_attributes>
+m2=0..12</panel_attributes>
     <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>690</x>
+      <y>260</y>
+      <w>100</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Stores data
+during runtime</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>530</x>
+      <y>770</y>
+      <w>130</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>_data/recipes.dat_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>840</x>
+      <y>690</y>
+      <w>150</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>_data/ingredients.dat_</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

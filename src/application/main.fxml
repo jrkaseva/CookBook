@@ -21,18 +21,18 @@
          <menus>
             <Menu fx:id="menuFile" mnemonicParsing="false" text="Tiedosto">
                <items>
-                  <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#etsiMenu" text="Tallenna" />
-                  <MenuItem fx:id="menuOpen" mnemonicParsing="false" onAction="#etusivu" text="Avaa resepti" />
-                  <MenuItem fx:id="menuPrint" mnemonicParsing="false" onAction="#tulostaMenu" text="Tulosta ohje" />
-                  <MenuItem fx:id="menuQuit" mnemonicParsing="false" onAction="#lopetaMenu" text="Lopeta" />
+                  <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#save" text="Tallenna" />
+                  <MenuItem fx:id="menuOpen" mnemonicParsing="false" onAction="#openRecipe" text="Avaa resepti" />
+                  <MenuItem fx:id="menuPrint" mnemonicParsing="false" onAction="#printInstruction" text="Tulosta ohje" />
+                  <MenuItem fx:id="menuQuit" mnemonicParsing="false" onAction="#quit" text="Lopeta" />
                </items>
             </Menu>
             <Menu fx:id="menuEdit" mnemonicParsing="false" text="Muokkaa">
                <items>
-                  <MenuItem fx:id="menuAddR" mnemonicParsing="false" onAction="#lisaaMenu" text="Lisää uusi resepti" />
-                  <MenuItem fx:id="menuDelR" mnemonicParsing="false" onAction="#poistaMenu" text="Poista resepti" />
-                  <MenuItem fx:id="menuModR" mnemonicParsing="false" onAction="#muokkaaMenu" text="Muokkaa reseptiä" />
-                  <MenuItem fx:id="menuFavR" mnemonicParsing="false" onAction="#lisaaMenu" text="Resepti lemppariksi" />
+                  <MenuItem fx:id="menuAddR" mnemonicParsing="false" onAction="#addRecipe" text="Lisää uusi resepti" />
+                  <MenuItem fx:id="menuDelR" mnemonicParsing="false" onAction="#removeRecipe" text="Poista resepti" />
+                  <MenuItem fx:id="menuModR" mnemonicParsing="false" onAction="#editRecipe" text="Muokkaa reseptiä" />
+                  <MenuItem fx:id="menuFavR" mnemonicParsing="false" onAction="#starRecipe" text="Resepti lemppariksi" />
                </items>
             </Menu>
             <Menu fx:id="menuHelp" mnemonicParsing="false" text="Apua">

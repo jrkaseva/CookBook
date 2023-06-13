@@ -1,9 +1,4 @@
 package application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
 import lib.Storage;
 
 /**
@@ -13,12 +8,12 @@ import lib.Storage;
  */
 public class MainController extends MenuController{
     
-     private static Storage storage = Storage.getInstance();
-     
-     /**
-     * @param args not in use
+    private static Storage storage = Storage.getInstance();
+    
+    /**
+     * 
      */
-    public static void main(String[] args) {
+    public MainController() {
          storage.loadData();
          System.out.println("MainController main-method");
      }

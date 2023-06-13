@@ -55,48 +55,53 @@ public class MenuController {
     protected MenuBar menuValikko;
 
     @FXML
-    void etsiMenu(ActionEvent event) {
-        //
+    void addRecipe(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
-    void etusivu(ActionEvent event) {
-        //
+    void editRecipe(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
     void help(ActionEvent event) {
-        //
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
     void info(ActionEvent event) {
-        //
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
-    void lisaaMenu(ActionEvent event) {
-        //
+    void openRecipe(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
-    void lopetaMenu(ActionEvent event) {
-        //
+    void printInstruction(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
-    void muokkaaMenu(ActionEvent event) {
-        //
+    void quit(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
-    void poistaMenu(ActionEvent event) {
-        //
+    void removeRecipe(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
     }
 
     @FXML
-    void tulostaMenu(ActionEvent event) {
-        //
+    void save(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
+    }
+
+    @FXML
+    void starRecipe(ActionEvent event) {
+        System.out.println("Ei toiminnossa");
     }
 
 }
