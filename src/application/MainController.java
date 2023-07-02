@@ -58,8 +58,6 @@ public class MainController extends MenuController{
      * 
      */
     public MainController() {
-         System.out.println("Main");
-         initialize();
          /* DIALOG USAGE
          Dialogs.showMessageDialog("Test dialog");
          Boolean choice = Dialogs.showQuestionDialog("TEST", "Test dialog", "Yes", "No");
@@ -72,12 +70,7 @@ public class MainController extends MenuController{
     private void initialize() {
         Platform.runLater(() -> {
             setData();
-        });    
-    }
-    
-    @FXML
-    void btnThing3(ActionEvent event) {
-        Dialogs.showMessageDialog("BtnThing3");
+        });
     }
     
     @FXML
@@ -111,10 +104,19 @@ public class MainController extends MenuController{
         stage = (Stage) mainBtnInfo.getScene().getWindow();
         storage = (Storage) stage.getUserData();
         for (int i : storage.getRecipes().keySet()) {
-            mainListChooser.add(i + "", storage.getRecipes().get(i));
+            mainListChooser.add(storage.getRecipes().get(i).getName(), storage.getRecipes().get(i));
         }
         mainListChooser.addSelectionListener(v -> {
             mainTextArea.setText(mainListChooser.getSelectedObject().getGuide());
         });
+        mainComboLabel.setText("0");
+        mainListChooser.setSelectedIndex(0);
+    }
+    
+    public void removeSelectedRecipe() {
+        if (!Dialogs.showQuestionDialog("Varmistus", "Haluatko varmasti poistaa valitun reseptin?",
+                "Kyllä", "Ei")) return;
+        storage.deleteRecipe(mainListChooser.getSelectedObject().getId());
+        initialize();
     }
 }

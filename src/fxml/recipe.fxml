@@ -78,7 +78,7 @@
                            </HBox.margin>
                         </Label>
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#onClick" text="Lisää uusi" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#onClick" text="Lisää uusi ainesosa" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                   <HBox prefHeight="100.0" prefWidth="200.0">
@@ -125,13 +125,13 @@
                </HBox.margin>
             </Button>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="recipeBtnInfo" defaultButton="true" mnemonicParsing="false" onAction="#test" text="i">
+            <Button fx:id="recipeBtnInfo" defaultButton="true" mnemonicParsing="false" onAction="#onClick" text="i">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
             </Button>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="recipeBtnConfirm" mnemonicParsing="false" onAction="#onClick" text="Vahvista">
+            <Button fx:id="recipeBtnConfirm" mnemonicParsing="false" onAction="#createRecipe" text="Vahvista">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>

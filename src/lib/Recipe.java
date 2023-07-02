@@ -63,7 +63,6 @@ public class Recipe {
     
     @Override
     public String toString() {
-        // TODO: format as id|name|creator|origin|course|guide
         return String.format("%d | %s | %s | %s | %s | %s", id, name, creator, origin, course, guide);
     }
     

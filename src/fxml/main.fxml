@@ -115,7 +115,7 @@
                </HBox.margin>
             </Button>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button fx:id="mainBtnDelete" mnemonicParsing="false" onAction="#btnThing3" text="Poista">
+            <Button fx:id="mainBtnDelete" mnemonicParsing="false" onAction="#removeSelectedRecipe" text="Poista">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>

@@ -71,8 +71,8 @@ public class MenuController {
             Stage s = (Stage) menuValikko.getScene().getWindow();
             s.setScene(new Scene(loader.load()));
             s.setTitle("Keittokirja - lis‰‰ resepti");
+            System.out.println("Loaded Recipe (new)");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
