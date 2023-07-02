@@ -19,12 +19,21 @@ public class Recipe {
     private String course;
     private String guide;
     private Boolean starred = false;
-    private ArrayList<Ingredient> ingredients;
+    private ArrayList<Ingredient> ingredients = new ArrayList<>();
     
     /**
      * default constructor
      */
-    public Recipe() {}
+    public Recipe() {
+        id = next_id;
+        next_id++;
+        name = "Recipe " + id;
+        creator = "Creator " + id;
+        origin = "Origin " + id;
+        course = "Course " + id;
+        guide = "Ohje: " + name;
+        ingredients.add(new Ingredient());
+    }
     
     /**
      * @param id -1 if new, else already assigned id
@@ -83,6 +92,20 @@ public class Recipe {
      */
     public void setNextId(int previous_id) {
         next_id = previous_id + 1;
+    }
+    
+    /**
+     * @return name of Recipe
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name for Recipe
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -153,6 +176,20 @@ public class Recipe {
      */
     public void setCourse(String course) {
         this.course = course;
+    }
+    
+    /**
+     * @return guide
+     */
+    public String getGuide() {
+        return guide;
+    }
+    
+    /**
+     * @param s new string for guide
+     */
+    public void setGuide(String s) {
+        guide = s;
     }
     
     /**

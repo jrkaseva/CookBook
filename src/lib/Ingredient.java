@@ -9,16 +9,31 @@ package lib;
  *
  */
 public class Ingredient {
+    private static int next_id = 1;
     private int id;
     private String name;
     
+    
+    /**
+     * 
+     */
+    public Ingredient() {
+        id = next_id;
+        next_id++;
+        name = "Ingredient " + id;
+    }
     
     /**
      * @param id of Ingredient
      * @param name of Ingredient
      */
     public Ingredient(int id, String name) {
-        this.id = id;
+        if (id == -1) {            
+            this.id = next_id;
+            next_id++;
+        } else {
+            this.id = id;
+        }
         this.name = name.trim().replace("|", " ");
     }
     

@@ -58,6 +58,35 @@ public class Storage {
     }
     
     /**
+     * @return HashMap of recipes
+     */
+    public HashMap<Integer, Recipe> getRecipes(){
+        return recipes;
+    }
+    
+    /**
+     * @param ingredient to be added
+     */
+    public void addIngredient(Ingredient ingredient) {
+        if (ingredients.containsValue(ingredient)) {
+            System.out.println("Recipe already exists");
+            return;
+        }
+        ingredients.put(ingredient.getId(),ingredient);
+    }
+    
+    /**
+     * @param id of ingredient to be deleted
+     */
+    public void deleteIngredient(int id) {
+        if (!recipes.containsKey(id)) {
+            System.out.println("No ingredient with id: " + id + " exists.");
+            return;
+        }
+        ingredients.remove(id);
+    }
+    
+    /**
 <<<<<<< Updated upstream
      * Loads data from data files.
      */

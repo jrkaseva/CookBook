@@ -59,12 +59,12 @@
                         </Label>
                         <ComboBox fx:id="mainComboBox" prefWidth="150.0" promptText="Rajaa">
                            <HBox.margin>
-                              <Insets bottom="20.0" left="20.0" right="5.0" top="20.0" />
+                              <Insets left="20.0" right="5.0" top="20.0" />
                            </HBox.margin>
                         </ComboBox>
                         <Label fx:id="mainComboLabel" layoutX="210.0" layoutY="10.0" prefHeight="24.0" prefWidth="59.0" text="N">
                            <HBox.margin>
-                              <Insets bottom="20.0" right="20.0" top="20.0" />
+                              <Insets right="20.0" top="20.0" />
                            </HBox.margin>
                         </Label>
                      </children>

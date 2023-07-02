@@ -2,6 +2,7 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
+import lib.Recipe;
 import lib.Storage;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
@@ -19,13 +20,17 @@ public class Main extends Application {
      */
     public static Stage stage;
     
+    /**
+     * Storage instance
+     */
     public static Storage storage;
     
 	@Override
 	public void start(Stage primaryStage) {
 	    stage = primaryStage;
 	    storage = Storage.getInstance();
-	    storage.loadData();
+	    // storage.loadData();
+	    createTestObjects();
 		try {
 		    FXMLLoader loader = new FXMLLoader();
 		    loader.setLocation(getClass().getResource("/fxml/home.fxml"));
@@ -37,6 +42,7 @@ public class Main extends Application {
 			stage.setResizable(false);
 			stage.setTitle("Keittokirja");
 			stage.show();
+			stage.setUserData(storage);
 			stage.setOnCloseRequest(v -> {
 			   System.out.println("Saving data (not in use)");
 			});
@@ -51,5 +57,11 @@ public class Main extends Application {
 	 */
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	private void createTestObjects() {
+	    for (int i = 0; i < 5; i++) {	        
+	        storage.addRecipe(new Recipe());
+	    }
 	}
 }
