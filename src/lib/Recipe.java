@@ -18,6 +18,7 @@ public class Recipe {
     private String origin;
     private String course;
     private String guide;
+    private Boolean starred = false;
     private ArrayList<Ingredient> ingredients;
     
     /**
@@ -125,6 +126,20 @@ public class Recipe {
     public void setOrigin(String origin) {
         this.origin = origin;
     }
+    
+    /**
+     * @return if recipe is starred
+     */
+    public Boolean getStarred() {
+        return starred;
+    }
+    
+    /**
+     * @param b true if to be starred.
+     */
+    public void setStarred(Boolean b) {
+        starred = b;
+    }
 
     /**
      * @return the course
@@ -146,8 +161,8 @@ public class Recipe {
      * @throws ParseException if error with parsing
      */
     public static Recipe parse(String s) throws ParseException {
-        String[] arr = s.split("|");
-        if (arr.length != 6) throw new ParseException("Virhe reseptien lukemisessa: tarkista rivin '|' merkkien m‰‰r‰");
+        String[] arr = s.split("\\|");
+        if (arr.length != 6) throw new ParseException("Virhe reseptien lukemisessa: tarkista rivin '|' merkkien m‰‰r‰. Oli " + arr.length + " alkiota. Piti olla 6.");
         try {
             Integer.parseInt(arr[0].trim());
         } catch (Exception e) {

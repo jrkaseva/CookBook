@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import fi.jyu.mit.fxgui.ListChooser?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -7,9 +8,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -58,23 +57,19 @@
                               <Insets top="10.0" />
                            </HBox.margin>
                         </Label>
-                        <ComboBox prefWidth="150.0" promptText="Rajaa">
+                        <ComboBox fx:id="mainComboBox" prefWidth="150.0" promptText="Rajaa">
                            <HBox.margin>
                               <Insets bottom="20.0" left="20.0" right="5.0" top="20.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <Label layoutX="210.0" layoutY="10.0" prefHeight="45.0" prefWidth="45.0" text="N">
+                        <Label fx:id="mainComboLabel" layoutX="210.0" layoutY="10.0" prefHeight="24.0" prefWidth="59.0" text="N">
                            <HBox.margin>
                               <Insets bottom="20.0" right="20.0" top="20.0" />
                            </HBox.margin>
                         </Label>
                      </children>
                   </HBox>
-                  <ScrollPane prefHeight="580.0" prefWidth="504.0">
-                    <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-                    </content>
-                  </ScrollPane>
+                  <ListChooser fx:id="mainListChooser" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="0.0" prefWidth="0.0" rivit="Makaronilaatikko&#10;Kinkkukiusaus&#10;Uunilohi&#10;...&#10;...&#10;...&#10;..." VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <VBox prefHeight="605.0" prefWidth="535.0">
@@ -93,7 +88,7 @@
                         <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
-                  <TextArea editable="false" prefHeight="580.0" prefWidth="535.0" />
+                  <TextArea fx:id="mainTextArea" editable="false" prefHeight="580.0" prefWidth="535.0" />
                </children>
             </VBox>
          </children>
@@ -103,29 +98,29 @@
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Button mnemonicParsing="false" text="Lisää uusi">
+            <Button fx:id="btnNewRecipe" mnemonicParsing="false" onAction="#addRecipe" text="Lisää uusi">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Muokkaa">
-               <HBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </HBox.margin>
-            </Button>
-            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="i">
+            <Button fx:id="editRecipe" mnemonicParsing="false" onAction="#editRecipe" text="Muokkaa">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
             </Button>
             <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" text="Poista">
+            <Button fx:id="mainBtnInfo" mnemonicParsing="false" onAction="#showInfo" text="i">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" text="Lemppariksi">
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="mainBtnDelete" mnemonicParsing="false" onAction="#btnThing3" text="Poista">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="mainBtnFav" mnemonicParsing="false" onAction="#btnThing4" text="Lemppariksi">
                <HBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </HBox.margin>

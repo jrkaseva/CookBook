@@ -2,6 +2,7 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
+import lib.Storage;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.fxml.FXMLLoader;
@@ -17,22 +18,33 @@ public class Main extends Application {
      * Scene stage
      */
     public static Stage stage;
+    
+    public static Storage storage;
+    
 	@Override
 	public void start(Stage primaryStage) {
 	    stage = primaryStage;
+	    storage = Storage.getInstance();
+	    storage.loadData();
 		try {
-		    FXMLLoader loader = new FXMLLoader(getClass().getResource("home.fxml"));
+		    FXMLLoader loader = new FXMLLoader();
+		    loader.setLocation(getClass().getResource("/fxml/home.fxml"));
 		    loader.setController(new HomeController());
 			VBox root = (VBox) loader.load();
 			Scene scene = new Scene(root,1080,720);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			stage.setScene(scene);
 			stage.setResizable(false);
+			stage.setTitle("Keittokirja");
 			stage.show();
+			stage.setOnCloseRequest(v -> {
+			   System.out.println("Saving data (not in use)");
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	/**
 	 * @param args not in use

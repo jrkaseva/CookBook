@@ -24,8 +24,8 @@ public class Storage {
     private Scanner sc;
     
     private static Storage storage = null;
-    private HashMap<Integer, Recipe> recipes;
-    private HashMap<Integer, Ingredient> ingredients;
+    private HashMap<Integer, Recipe> recipes = new HashMap<>();
+    private HashMap<Integer, Ingredient> ingredients = new HashMap<>();
     
     /**
      * @return Storage instance
