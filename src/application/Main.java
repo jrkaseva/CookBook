@@ -2,6 +2,7 @@ package application;
 	
 import javafx.application.Application;
 import javafx.stage.Stage;
+import lib.Ingredient;
 import lib.Recipe;
 import lib.Storage;
 import javafx.scene.Scene;
@@ -29,15 +30,15 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 	    stage = primaryStage;
 	    storage = Storage.getInstance();
-	    // storage.loadData();
-	    createTestObjects();
+	    storage.loadData();
+	    // createTestObjects();
 		try {
 		    FXMLLoader loader = new FXMLLoader();
 		    loader.setLocation(getClass().getResource("/fxml/home.fxml"));
 		    loader.setController(new HomeController());
 			VBox root = (VBox) loader.load();
 			Scene scene = new Scene(root,1080,720);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/styles/application.css").toExternalForm());
 			stage.setScene(scene);
 			stage.setResizable(false);
 			stage.setTitle("Keittokirja");
@@ -60,8 +61,9 @@ public class Main extends Application {
 	}
 	
 	private void createTestObjects() {
-	    for (int i = 0; i < 5; i++) {	        
+	    for (int i = 0; i < 15; i++) {	        
 	        storage.addRecipe(new Recipe());
+	        storage.addIngredient(new Ingredient());
 	    }
 	}
 }

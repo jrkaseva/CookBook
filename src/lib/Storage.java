@@ -3,29 +3,18 @@
  */
 package lib;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-
 /**
- * @author tietokone
+ * @author joakim kaseva
  * @version 6.6.2023
  *
  */
 public class Storage {
-    private final String DIR = System.getProperty("user.dir").toString() + "\\src\\data\\";
-    private final String RECIPES_FILE = DIR + "recipes.dat";
-    private final String INGREDIENTS_FILE = DIR + "ingredients.dat";
-    private final String RELATION_FILE = DIR + "relation.dat";
-    private Scanner sc;
+    private int maxRecipes = 100;
     
     private static Storage storage = null;
-    private HashMap<Integer, Recipe> recipes = new HashMap<>();
-    private HashMap<Integer, Ingredient> ingredients = new HashMap<>();
+    private Recipes recipes = new Recipes();
+    private Ingredients ingredients = new Ingredients();
+    private Relations relations = new Relations();
     
     /**
      * @return Storage instance
@@ -36,21 +25,10 @@ public class Storage {
     }
     
     /**
-     * @param recipe to be added
-     */
-    public void addRecipe(Recipe recipe) {
-        if (recipes.containsValue(recipe)) {
-            System.out.println("Recipe already exists");
-            return;
-        }
-        recipes.put(recipe.getId(), recipe);
-    }
-    
-    /**
      * @param id of recipe to be deleted
      */
     public void deleteRecipe(int id) {
-        if (!recipes.containsKey(id)) {
+        if (!recipes.contains(id)) {
             System.out.println("No recipe with id: " + id + " exists.");
             return;
         }
@@ -60,26 +38,59 @@ public class Storage {
     /**
      * @return HashMap of recipes
      */
-    public HashMap<Integer, Recipe> getRecipes(){
+    public Recipes getRecipes(){
         return recipes;
     }
     
     /**
-     * @param ingredient to be added
+     * @return ingredients
      */
-    public void addIngredient(Ingredient ingredient) {
-        if (ingredients.containsValue(ingredient)) {
-            System.out.println("Recipe already exists");
+    public Ingredients getIngredients() {
+        return ingredients;
+    }
+    
+    /**
+     * @param recipe to be added
+     */
+    public void addRecipe(Recipe recipe) {
+        if (recipes.contains(recipe.getId())) {
+            System.out.println("Recipe already exists (ID " + recipe.getId() + ")");
             return;
         }
-        ingredients.put(ingredient.getId(),ingredient);
+        if (recipes.getRecipes().size() == maxRecipes) {
+            System.out.println("Maximum amount of Recipes");
+            return;
+        }
+        recipes.put(recipe);
+    }
+
+    /**
+     * @param ingredient to be added
+     * @return true if successfully added
+     */
+    public boolean addIngredient(Ingredient ingredient) {
+        if (ingredient == null) return false;
+        if (ingredients.containsValue(ingredient)) {
+            System.out.println("Ingredient '" + ingredient + "' already exists (by ID or name)");
+            return false;
+        }
+        if (!ingredients.hasNull()) {
+            if (!ingredients.canExpand()) {
+                System.out.println("Maximum amount of ingredients");
+                return false;
+            }
+            ingredients = new Ingredients(ingredients);
+        }
+        System.out.println("Adding new ingredient: " + ingredient);
+        ingredients.put(ingredient);
+        return true;
     }
     
     /**
      * @param id of ingredient to be deleted
      */
     public void deleteIngredient(int id) {
-        if (!recipes.containsKey(id)) {
+        if (!ingredients.contains(id)) {
             System.out.println("No ingredient with id: " + id + " exists.");
             return;
         }
@@ -87,82 +98,59 @@ public class Storage {
     }
     
     /**
-<<<<<<< Updated upstream
      * Loads data from data files.
      */
     public void loadData() {
-        loadFile(RECIPES_FILE);
-        loadFile(INGREDIENTS_FILE);
-        loadFile(RELATION_FILE);
+        ingredients.load();
+        recipes.load();
+        relations.load();
+        setRelations();
     }
     
     /**
-     * @param file to be loaded from
-     * 
+     * Sets the ingredients for recipes
      */
-    public void loadFile(String file) {
-        File f = new File(file);
-        if (!f.exists()) {
-            try {
-                f.createNewFile();
-                System.out.printf("New file created at: %s\n", f.getAbsoluteFile());
-                return;
-            } catch (IOException e) {
-                System.out.println("Error creating new file");
-                e.printStackTrace();
-            }
-        } else System.out.printf("File path: %s\n", f.getAbsolutePath());
-        try {
-            sc = new Scanner(f);
-        } catch (FileNotFoundException e) {
-            System.out.println("Error with \"new Scanner(File f)\"");
-            e.printStackTrace();
-            return;
-        }
-        int count = 0;
-        while (sc.hasNextLine()) {
-            count++;
-            String line = sc.nextLine();
-            System.out.println(line);
-            try {                
-                if (file.equals(RECIPES_FILE)) {
-                    Recipe add = Recipe.parse(line);
-                    recipes.put(add.getId(), add);
+    private void setRelations() {
+        for (Recipe r : recipes.getRecipes()) {
+            for(Relation rel : relations.getRelations()) {
+                if (rel.getRecipeId() == r.getId()) {
+                    if (ingredients.get(rel.getIngredientId()) != null) r.addIngredient(ingredients.get(rel.getIngredientId()));
                 }
-                else if (file.equals(INGREDIENTS_FILE)) {
-                    Ingredient add = Ingredient.parse(line);
-                    ingredients.put(add.getId(), add);
-                }
-                else {
-                    System.out.println("Relations not implemented yet");
-                }
-            }catch (ParseException e) {
-                System.out.println(e.getMessage());
             }
         }
-        System.out.printf("Loaded %d lines from %s\n", count, f.getName());
-        sc.close();
+    }
+    
+    private void getRelations() {
+        relations = new Relations();
+        for (Recipe r : recipes.getRecipes()) {
+            for (Ingredient i : r.getIngredients()) {
+                relations.addRelation(new Relation(r.getId(), i.getId()));
+            }
+        }
     }
     
     /**
-     * 
+     * @return true if can store ingredients
      */
-    public void saveData() {
-        //TODO: OVERWRITE EXISTING DATA IN FILE
-        FileWriter writer = null;
-        //File f = new File(RECIPES_FILE);
-        try {
-            writer = new FileWriter(RECIPES_FILE);
-            for (int i : recipes.keySet()) {
-                writer.write(recipes.get(i) + "\n");
-            }
-            writer = new FileWriter("ingredients.dat");
-            for (int i : ingredients.keySet()) {
-                writer.write(ingredients.get(i) + "\n");
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public boolean canAddIngredient() {
+        if (ingredients.count() < 30) return true;
+        return false;
+    }
+    
+    /**
+     * @return true if can store recipes
+     */
+    public boolean canAddRecipe() {
+        if (recipes.getRecipes().size() < 100) return true;
+        return false;
+    }
+    
+    /**
+     * Saves data to files
+     * @return true if successful
+     */
+    public boolean saveData() {
+        getRelations();
+        return (ingredients.save() && recipes.save() && relations.save());
     }
 }

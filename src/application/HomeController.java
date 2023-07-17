@@ -35,7 +35,6 @@ public class HomeController {
             s.setScene(new Scene(loader.load()));
             System.out.println("Loaded main");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     } 

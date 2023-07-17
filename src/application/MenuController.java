@@ -120,7 +120,11 @@ public class MenuController {
 
     @FXML
     void save(ActionEvent event) {
-        System.out.println("Ei toiminnossa (Tallenna)");
+        if (Main.storage.saveData()) {            
+            Dialogs.showMessageDialog("Tiedot tallennettu");
+        } else {
+            Dialogs.showMessageDialog("Virhe tallentaessa");
+        }
     }
 
     @FXML

@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -14,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import lib.Storage;
+import lib.Ingredient;
 import lib.Recipe;
 
 /**
@@ -69,7 +71,10 @@ public class MainController extends MenuController{
     @FXML 
     private void initialize() {
         Platform.runLater(() -> {
+            mainTextArea.setWrapText(true);
             setData();
+            stage.getScene().getStylesheets().add("styles/main.css");
+            btnNewRecipe.getStyleClass().add("bot");
         });
     }
     
@@ -87,7 +92,6 @@ public class MainController extends MenuController{
             stage.setScene(new Scene(loader.load()));
             System.out.println("Loaded Recipe (edit)");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -99,20 +103,40 @@ public class MainController extends MenuController{
                 + "Voit myös rajata, mitä reseptejä haluat nähdä.");
     }
     
+    /**
+     * Sets the data for the scene
+     */
     private void setData() {
         mainListChooser.setRivit(new String[0]);
         stage = (Stage) mainBtnInfo.getScene().getWindow();
-        storage = (Storage) stage.getUserData();
-        for (int i : storage.getRecipes().keySet()) {
-            mainListChooser.add(storage.getRecipes().get(i).getName(), storage.getRecipes().get(i));
+        storage = Main.storage;
+        for (Recipe r : storage.getRecipes().getRecipes()) {
+            mainListChooser.add(r.getName(), r);
         }
         mainListChooser.addSelectionListener(v -> {
-            mainTextArea.setText(mainListChooser.getSelectedObject().getGuide());
+            StringBuilder bldr = new StringBuilder("Ainesosat:\n");
+            if (!mainListChooser.getSelectedObject().getIngredients().isEmpty()) {      
+                int count = 0;
+                for (Ingredient i : mainListChooser.getSelectedObject().getIngredients()) {
+                    if (i == null) count++;
+                    else bldr.append(i.getName() + "\n");
+                }
+                if (count != 0) bldr.append(count + " missing ingredients. Try editing recipe to add missing ingredients" + "\n");
+            } else {
+                bldr.append("Ei asetettu ainesosia\n");
+            }
+            bldr.append("****************\n");
+            if (mainListChooser.getSelectedObject().getGuide() != null) bldr.append(mainListChooser.getSelectedObject().getGuide());
+            mainTextArea.setText(bldr.toString());
         });
         mainComboLabel.setText("0");
         mainListChooser.setSelectedIndex(0);
+        
     }
     
+    /**
+     * Removes the current recipe selected by mainListChooser
+     */
     public void removeSelectedRecipe() {
         if (!Dialogs.showQuestionDialog("Varmistus", "Haluatko varmasti poistaa valitun reseptin?",
                 "Kyllä", "Ei")) return;

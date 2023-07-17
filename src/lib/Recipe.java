@@ -8,9 +8,9 @@ import java.util.ArrayList;
 /**
  * @author tietokone
  * @version 6.6.2023
- *
+ * error testing static attributes, should reset in every test
  */
-public class Recipe {
+public class Recipe implements Comparable<Recipe> {
     private static int next_id = 1;
     private int id;
     private String name;
@@ -23,6 +23,11 @@ public class Recipe {
     
     /**
      * default constructor
+     * @example
+     * <pre name="test">
+     * Recipe r = new Recipe();
+     * r.getId() === 1;
+     * </pre>
      */
     public Recipe() {
         id = next_id;
@@ -32,7 +37,6 @@ public class Recipe {
         origin = "Origin " + id;
         course = "Course " + id;
         guide = "Ohje: " + name;
-        ingredients.add(new Ingredient());
     }
     
     /**
@@ -43,6 +47,11 @@ public class Recipe {
      * @param course 0 = appetizer, 1 = main, 2 = dessert
      * @param guide to follow
      * @param ingredients of course
+     * @example
+     * <pre name="test">
+     * Recipe r = new Recipe(1, "perunasalaatti", "atria", "suomi", "p‰‰ruoka", "ohje", null);
+     * r.toString() === "1 | perunasalaatti | atria | suomi | p‰‰ruoka | ohje";
+     * </pre>
      */
     public Recipe(int id, String name, String creator, String origin, String course, String guide, ArrayList<Ingredient> ingredients) {
 
@@ -81,15 +90,27 @@ public class Recipe {
 
     /**
      * @return the id
+     * @example
+     * <pre name="test">
+     * Recipe r = new Recipe(1, "perunasalaatti", "atria", "suomi", "p‰‰ruoka", "ohje", null);
+     * r.getId() === 1;
+     * </pre>
      */
     public int getId() {
         return id;
     }
     
     /**
+     * comtest error -> first new Recipe() creates Recipe with id 2 in junit, but not in main
      * @param previous_id highest existing id
+     * @example
+     * <pre name="test">
+     * Recipe.setNextId(6);
+     * Recipe r = new Recipe();
+     * r.getId() === 7;
+     * </pre>
      */
-    public void setNextId(int previous_id) {
+    public static void setNextId(int previous_id) {
         next_id = previous_id + 1;
     }
     
@@ -118,7 +139,32 @@ public class Recipe {
      * @param ingredients the ingredients to set
      */
     public void setIngredients(ArrayList<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+        if (ingredients != null) this.ingredients = ingredients;
+    }
+    
+    /**
+     * @param ingredient to be added
+     */
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+    }
+    
+    
+    /**
+     * @param i1 Ingredient to be replaced
+     * @param i2 Ingredient to replace
+     * @example
+     * <pre name="test">
+     * Recipe r = new Recipe();
+     * Ingredient i = new Ingredient(1, "peruna");
+     * r.addIngredient(i); r.getIngredients().get(0).toString() === "1 | peruna";
+     * r.replaceIngredient(i, new Ingredient(2, "maito"));
+     * r.getIngredients().get(0).toString() === "2 | maito";
+     * </pre>
+     */
+    public void replaceIngredient(Ingredient i1, Ingredient i2) {
+        if (ingredients.remove(i1)) ingredients.add(i2);
+        else System.out.println("Error replacing recipe's ingredients");
     }
 
     /**
@@ -204,6 +250,11 @@ public class Recipe {
         } catch (Exception e) {
             throw new ParseException("Virhe ainesosien lukemisessa: ID ei ole laillinen numero");
         }
-        return new Recipe(Integer.parseInt(arr[0].trim()), arr[1].trim(), arr[2].trim(), arr[3].trim(), arr[4].trim(), arr[5].trim(), null);
+        return new Recipe(Integer.parseInt(arr[0].trim()), arr[1].trim(), arr[2].trim(), arr[3].trim(), arr[4].trim(), arr[5].trim(), new ArrayList<Ingredient>());
+    }
+    
+    @Override
+    public int compareTo(Recipe r) {
+        return id - r.id;
     }
 }
