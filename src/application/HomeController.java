@@ -19,18 +19,23 @@ public class HomeController {
     @FXML
     private Button btnHome;
     
+    /**
+     * 
+     */
+    public HomeController() {
+        System.out.println("Home");
+    }
+    
     @FXML
     void openMain(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
             loader.setController(new MainController());
             Stage s = (Stage) btnHome.getScene().getWindow();
             s.setScene(new Scene(loader.load()));
             System.out.println("Loaded main");
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-    
+    } 
 }

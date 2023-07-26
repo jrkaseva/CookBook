@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fi.jyu.mit.fxgui.CheckBoxChooser?>
+<?import fi.jyu.mit.fxgui.ComboBoxChooser?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="body" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="722.0" prefWidth="1040.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <MenuBar fx:id="menuValikko">
+         <menus>
+            <Menu fx:id="menuFile" mnemonicParsing="false" text="Tiedosto">
+               <items>
+                  <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#save" text="Tallenna" />
+                  <MenuItem fx:id="menuOpen" mnemonicParsing="false" onAction="#openRecipe" text="Avaa resepti" />
+                  <MenuItem fx:id="menuPrint" mnemonicParsing="false" onAction="#printInstruction" text="Tulosta ohje" />
+                  <MenuItem fx:id="menuQuit" mnemonicParsing="false" onAction="#quit" text="Lopeta" />
+               </items>
+            </Menu>
+            <Menu fx:id="menuEdit" mnemonicParsing="false" text="Muokkaa">
+               <items>
+                  <MenuItem fx:id="menuAddR" mnemonicParsing="false" onAction="#addRecipe" text="Lisää uusi resepti" />
+                  <MenuItem fx:id="menuDelR" mnemonicParsing="false" onAction="#info" text="Poista resepti" />
+                  <MenuItem fx:id="menuModR" mnemonicParsing="false" onAction="#info" text="Muokkaa reseptiä" />
+                  <MenuItem fx:id="menuFavR" mnemonicParsing="false" onAction="#info" text="Resepti lemppariksi" />
+               </items>
+            </Menu>
+            <Menu fx:id="menuHelp" mnemonicParsing="false" text="Apua">
+               <items>
+                  <MenuItem fx:id="menuShowHelp" mnemonicParsing="false" onAction="#help" text="Apua" />
+                  <MenuItem fx:id="menuInfo" mnemonicParsing="false" onAction="#info" text="Tietoja" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <HBox prefHeight="605.0" prefWidth="1040.0" spacing="25.0">
+         <children>
+            <VBox prefHeight="605.0" prefWidth="504.0">
+               <children>
+                  <TextField fx:id="recipeTextName" prefHeight="25.0" promptText="Nimi">
+                     <VBox.margin>
+                        <Insets left="20.0" right="100.0" top="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField fx:id="recipeTextCreator" layoutX="30.0" layoutY="30.0" prefHeight="25.0" prefWidth="408.0" promptText="Tekijä">
+                     <VBox.margin>
+                        <Insets left="20.0" right="100.0" top="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField fx:id="recipeTextOrigin" layoutX="10.0" layoutY="75.0" prefHeight="25.0" prefWidth="408.0" promptText="Alkuperämaa">
+                     <VBox.margin>
+                        <Insets left="20.0" right="100.0" top="20.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <ComboBoxChooser fx:id="recipeComboCourse" prefWidth="300.0" promptText="Ruokalaji">
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </ComboBoxChooser>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Sisältää:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="btnDeleteIngredients" mnemonicParsing="false" onAction="#deleteIngredients" text="Poista valitut ainesosat">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnNewIngredient" mnemonicParsing="false" onAction="#newIngredient" text="Lisää uusi ainesosa" HBox.hgrow="ALWAYS" />
+                     	<Label fx:id="recipeIngredientLabel">
+                     		<HBox.margin>
+                     			<Insets left="10.0" top="5.0"/>
+                     		</HBox.margin>
+                     	</Label>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <CheckBoxChooser fx:id="recipeCB1" rivit="Liha&#10;Kala&#10;Kana&#10;Juusto&#10;Muna&#10;...&#10;...&#10;...&#10;...&#10;...&#10;...&#10;...&#10;..." />
+                        <CheckBoxChooser fx:id="recipeCB2" />
+                        <CheckBoxChooser fx:id="recipeCB3" layoutX="86.0" layoutY="10.0" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefHeight="605.0" prefWidth="535.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <Label text="Ohje">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <TextArea fx:id="recipeTextArea" prefHeight="580.0" prefWidth="535.0" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="btnReturn" cancelButton="true" mnemonicParsing="false" onAction="#cancel" text="Peruuta">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="recipeBtnInfo" defaultButton="true" mnemonicParsing="false" onAction="#help" text="i">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Region prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+            <Button fx:id="recipeBtnConfirm" mnemonicParsing="false" onAction="#createRecipe" text="Vahvista">
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

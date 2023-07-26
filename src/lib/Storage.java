@@ -3,27 +3,20 @@
  */
 package lib;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
- * @author tietokone
+ * @author joakim kaseva
  * @version 6.6.2023
  *
  */
 public class Storage {
-    private final String DIR = System.getProperty("user.dir").toString() + "\\src\\data\\";
-    private final String RECIPES_FILE = DIR + "recipes.dat";
-    private final String INGREDIENTS_FILE = DIR + "ingredients.dat";
-    private final String RELATION_FILE = DIR + "relation.dat";
-    private Scanner sc;
+    private int maxRecipes = 100;
     
     private static Storage storage = null;
-    private ArrayList<Recipe> recipes;
-    private ArrayList<Ingredient> ingredients;
+    private Recipes recipes = new Recipes();
+    private Ingredients ingredients = new Ingredients();
+    private Relations relations = new Relations();
     
     /**
      * @return Storage instance
@@ -34,64 +27,140 @@ public class Storage {
     }
     
     /**
-     * @param recipe to be added
+     * @param id of recipe to be deleted
      */
-    public void addRecipe(Recipe recipe) {
-        recipes.add(recipe);
+    public void deleteRecipe(int id) {
+        if (!recipes.contains(id)) {
+            System.out.println("No recipe with id: " + id + " exists.");
+            return;
+        }
+        recipes.remove(id);
     }
     
     /**
-     * @param index of recipe to be deleted
+     * @return HashMap of recipes
      */
-    public void deleteRecipe(int index) {
-        recipes.remove(index);
+    public Recipes getRecipes(){
+        return recipes;
+    }
+    
+    /**
+     * @return ingredients
+     */
+    public Ingredients getIngredients() {
+        return ingredients;
+    }
+    
+    /**
+     * @param recipe to be added
+     */
+    public void addRecipe(Recipe recipe) {
+        if (recipes.contains(recipe.getId())) {
+            System.out.println("Recipe already exists (ID " + recipe.getId() + ")");
+            return;
+        }
+        if (recipes.getRecipes().size() == maxRecipes) {
+            System.out.println("Maximum amount of Recipes");
+            return;
+        }
+        recipes.put(recipe);
+    }
+
+    /**
+     * @param ingredient to be added
+     * @return true if successfully added
+     */
+    public boolean addIngredient(Ingredient ingredient) {
+        if (ingredient == null) return false;
+        if (ingredients.containsValue(ingredient)) {
+            System.out.println("Ingredient '" + ingredient + "' already exists (by ID or name)");
+            return false;
+        }
+        if (!ingredients.hasNull()) {
+            if (!ingredients.canExpand()) {
+                System.out.println("Maximum amount of ingredients");
+                return false;
+            }
+            ingredients = new Ingredients(ingredients);
+        }
+        System.out.println("Adding new ingredient: " + ingredient);
+        ingredients.put(ingredient);
+        return true;
+    }
+    
+    /**
+     * @param id of ingredient to be deleted
+     */
+    public void deleteIngredient(int id) {
+        if (!ingredients.contains(id)) {
+            System.out.println("No ingredient with id: " + id + " exists.");
+            return;
+        }
+        ingredients.remove(id);
+    }
+    
+    /**
+     * @param str to be searched with
+     * @return arraylist with recipes containing str
+     */
+    public ArrayList<Recipe> search(String str) {
+        return recipes.search(str);
     }
     
     /**
      * Loads data from data files.
      */
     public void loadData() {
-        loadFile(RECIPES_FILE);
-        loadFile(INGREDIENTS_FILE);
-        loadFile(RELATION_FILE);
+        ingredients.load();
+        recipes.load();
+        relations.load();
+        setRelations();
     }
     
     /**
-     * @param file to be loaded from
-     * 
+     * Sets the ingredients for recipes
      */
-    public void loadFile(String file) {
-        File f = new File(file);
-        if (!f.exists()) {
-            try {
-                f.createNewFile();
-                System.out.printf("New file created at: %s\n", f.getAbsoluteFile());
-                return;
-            } catch (IOException e) {
-                System.out.println("Error creating new file");
-                e.printStackTrace();
+    private void setRelations() {
+        for (Recipe r : recipes.getRecipes()) {
+            for(Relation rel : relations.getRelations()) {
+                if (rel.getRecipeId() == r.getId()) {
+                    if (ingredients.get(rel.getIngredientId()) != null) r.addIngredient(ingredients.get(rel.getIngredientId()));
+                }
             }
-        } else System.out.printf("File path: %s\n", f.getAbsolutePath());
-        try {
-            sc = new Scanner(f);
-        } catch (FileNotFoundException e) {
-            System.out.println("Error with \"new Scanner(File f)\"");
-            e.printStackTrace();
-            return;
         }
-        System.out.println("Loading from file " + f.getName());
-        int count = 0;
-        while (sc.hasNextLine()) {
-            count++;
-            String line = sc.nextLine();
-            System.out.println(line);
-            // TODO: get data from .dat-files and if necessary, create .dat-files.
-        }
-        System.out.printf("Loaded %d lines\n", count);
-        sc.close();
     }
     
-    public void saveData() {
-        // TODO: save data to .dat-file. Object.toString should suffice.
+    private void getRelations() {
+        relations = new Relations();
+        for (Recipe r : recipes.getRecipes()) {
+            for (Ingredient i : r.getIngredients()) {
+                relations.addRelation(new Relation(r.getId(), i.getId()));
+            }
+        }
+    }
+    
+    /**
+     * @return true if can store ingredients
+     */
+    public boolean canAddIngredient() {
+        if (ingredients.count() < 30) return true;
+        return false;
+    }
+    
+    /**
+     * @return true if can store recipes
+     */
+    public boolean canAddRecipe() {
+        if (recipes.getRecipes().size() < 100) return true;
+        return false;
+    }
+    
+    /**
+     * Saves data to files
+     * @return true if successful
+     */
+    public boolean saveData() {
+        getRelations();
+        return (ingredients.save() && recipes.save() && relations.save());
     }
 }

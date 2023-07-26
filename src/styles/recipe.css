@@ -1,0 +1,16 @@
+.button {
+	-fx-background-color: #555555;
+	-fx-text-fill: #fff;
+}
+
+.button:hover {
+	-fx-background-color: #222;
+}
+
+#menuValikko {
+	-fx-background-color: #abc;
+}
+
+#body {
+	-fx-background-color: #bbb;
+}
