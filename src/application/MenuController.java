@@ -5,7 +5,6 @@ import fi.jyu.mit.fxgui.Dialogs;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -20,46 +19,95 @@ import javafx.stage.Stage;
  *
  */
 public class MenuController {
-
+    
+    /**
+     * Prepares to create a new recipe
+     */
     @FXML
     protected MenuItem menuAddR;
 
+    
+    /**
+     * Prepares to delete the selected recipe
+     */
     @FXML
     protected MenuItem menuDelR;
 
+    /**
+     * Contains MenuItems for interacting with recipes
+     */
     @FXML
     protected Menu menuEdit;
+
+    /**
+     * Sets a recipe as favourite
+     */
 
     @FXML
     protected MenuItem menuFavR;
 
+    /**
+     * Contains MenuItems for the application
+     */
     @FXML
     protected Menu menuFile;
 
+    /**
+     * Contains MenuItems for information/help
+     */
     @FXML
     protected Menu menuHelp;
+
+    /**
+     * Shows the info of application
+     */
 
     @FXML
     protected MenuItem menuInfo;
 
+    /**
+     * Prepares to edit the selected recipe
+     */
     @FXML
     protected MenuItem menuModR;
 
+    /**
+     * Opens the current recipe
+     */
     @FXML
     protected MenuItem menuOpen;
 
+    /**
+     * Prepares to print the selected recipe
+     */
     @FXML
     protected MenuItem menuPrint;
 
+
+    /**
+     * Quits the application after confirmation of saving
+     */
     @FXML
     protected MenuItem menuQuit;
 
+
+    /**
+     * Saves the current data in the application
+     */
     @FXML
     protected MenuItem menuSave;
 
+
+    /**
+     * Shows the info of the current scene
+     */
     @FXML
     protected MenuItem menuShowHelp;
 
+
+    /**
+     * Contains the Menus with MenuItems
+     */
     @FXML
     protected MenuBar menuValikko;
 
@@ -78,21 +126,10 @@ public class MenuController {
     }
 
     @FXML
-    void editRecipe(ActionEvent event) {
-        Dialogs.showMessageDialog("Going to edit recipe");
-        System.out.println("Ei toiminnossa (Muokkaa reseptiä)");
-    }
-
-    @FXML
-    void help(ActionEvent event) {
-        System.out.println("Ei toiminnossa (Apua)");
-    }
-
-    @FXML
     void info(ActionEvent event) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Info");
-        alert.setContentText("Joakim Kaseva\nIT-JYU\nOhjelmointi 2");
+        alert.setContentText("Keittokirja\nJoakim Kaseva\nIT-JYU\nOhjelmointi 2");
         alert.setHeaderText(null);
         alert.getDialogPane().setPrefSize(200, -1);
         alert.showAndWait();
@@ -110,14 +147,9 @@ public class MenuController {
 
     @FXML
     void quit(ActionEvent event) {
-        System.out.println("Ei toiminnossa (Lopeta)");
+        if (Dialogs.showQuestionDialog("Lopetetaan", "Haluatko tallentaa ennen lopettamista?", "Kyllä", "Ei")) save(event);
+        System.exit(0);
     }
-
-    @FXML
-    void removeRecipe(ActionEvent event) {
-        System.out.println("Ei toiminnossa (Poista resepti)");
-    }
-
     @FXML
     void save(ActionEvent event) {
         if (Main.storage.saveData()) {            
@@ -126,15 +158,24 @@ public class MenuController {
             Dialogs.showMessageDialog("Virhe tallentaessa");
         }
     }
-
-    @FXML
-    void starRecipe(ActionEvent event) {
-        System.out.println("Ei toiminnossa (Lemppariksi resepti)");
+    
+    /**
+     * Disables menu buttons when editing/adding recipe
+     */
+    protected void disableMenuButtons() {
+        menuEdit.setDisable(true);
+        menuOpen.setDisable(true);
+        menuPrint.setDisable(true);
     }
     
-    @FXML
-    void onClick(ActionEvent event) {
-        Dialogs.showMessageDialog("Ei vielä toiminnassa");
+    
+    /**
+     * Enables disabled buttons
+     */
+    protected void enableMenuButtons() {
+        menuEdit.setDisable(false);
+        menuOpen.setDisable(false);
+        menuPrint.setDisable(false);
     }
 
 }

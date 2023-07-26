@@ -41,6 +41,15 @@ public class Relation implements Comparable<Relation>{
      * @param s string to be parsed
      * @return new Relation
      * @throws ParseException if error when parsing
+     * @example
+     * <pre name="test">
+     * try {
+     *  parse("1 | 1").toString() === "1 | 1";
+     * } catch (ParseException e) {
+     *  System.out.println(e);
+     * }
+     * 
+     * </pre>
      */
     public static Relation parse(String s) throws ParseException {
         String[] arr = s.split("\\|");

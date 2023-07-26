@@ -3,6 +3,8 @@
  */
 package lib;
 
+import java.util.ArrayList;
+
 /**
  * @author joakim kaseva
  * @version 6.6.2023
@@ -95,6 +97,14 @@ public class Storage {
             return;
         }
         ingredients.remove(id);
+    }
+    
+    /**
+     * @param str to be searched with
+     * @return arraylist with recipes containing str
+     */
+    public ArrayList<Recipe> search(String str) {
+        return recipes.search(str);
     }
     
     /**

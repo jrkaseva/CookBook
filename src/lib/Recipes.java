@@ -134,4 +134,46 @@ public class Recipes {
     public void sort() {
         Collections.sort(recipes);
     }
+
+    /**
+     * @param selectedObject string to get recipes by
+     * @return array with recipes.
+     */
+    public ArrayList<Recipe> getByTrait(String selectedObject) {
+        ArrayList<Recipe> arr = new ArrayList<>();
+        if (selectedObject.equals("Kaikki")) return recipes;
+        if (selectedObject.equals("Lempparit")) {
+            for (Recipe r : recipes) {
+                if (r.getStarred()) {
+                    arr.add(r);
+                }
+            }
+            return arr;
+        }
+        for (Recipe r : recipes) {
+            if (r.getCourse().equals(selectedObject)) {
+                arr.add(r);
+            }
+        }
+        return arr;
+    }
+
+    /**
+     * @return count of recipes
+     */
+    public int count() {
+        return recipes.size();
+    }
+    
+    /**
+     * @param str to be searched with
+     * @return arraylist with recipes containing str in name
+     */
+    public ArrayList<Recipe> search(String str){
+        ArrayList<Recipe> arr = new ArrayList<>();
+        for (Recipe r : recipes) {
+            if (r.getName(false).contains(str)) arr.add(r);
+        }
+        return arr;
+    }
 }

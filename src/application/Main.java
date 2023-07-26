@@ -1,5 +1,6 @@
 package application;
 	
+import fi.jyu.mit.fxgui.Dialogs;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import lib.Ingredient;
@@ -31,7 +32,6 @@ public class Main extends Application {
 	    stage = primaryStage;
 	    storage = Storage.getInstance();
 	    storage.loadData();
-	    // createTestObjects();
 		try {
 		    FXMLLoader loader = new FXMLLoader();
 		    loader.setLocation(getClass().getResource("/fxml/home.fxml"));
@@ -45,7 +45,7 @@ public class Main extends Application {
 			stage.show();
 			stage.setUserData(storage);
 			stage.setOnCloseRequest(v -> {
-			   System.out.println("Saving data (not in use)");
+			   if(Dialogs.showQuestionDialog("Tallennetaanko?", "Haluatko tallentaa nykyisen keittokirjan?", "Kyllä", "Ei")) storage.saveData();
 			});
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -58,12 +58,5 @@ public class Main extends Application {
 	 */
 	public static void main(String[] args) {
 		launch(args);
-	}
-	
-	private void createTestObjects() {
-	    for (int i = 0; i < 15; i++) {	        
-	        storage.addRecipe(new Recipe());
-	        storage.addIngredient(new Ingredient());
-	    }
 	}
 }

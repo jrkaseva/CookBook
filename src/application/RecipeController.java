@@ -2,17 +2,18 @@ package application;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import fi.jyu.mit.fxgui.CheckBoxChooser;
-import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import lib.*;
 
@@ -26,6 +27,7 @@ public class RecipeController extends MenuController{
     private Storage storage;
     
     private Recipe recipe;
+    private boolean modifiable = false;
 
     @FXML
     private Button btnReturn;
@@ -52,7 +54,7 @@ public class RecipeController extends MenuController{
     private CheckBoxChooser<Ingredient> recipeCB3;
 
     @FXML
-    private ComboBox<String> recipeComboCourse;
+    private ComboBoxChooser<String> recipeComboCourse;
 
     @FXML
     private TextArea recipeTextArea;
@@ -66,6 +68,9 @@ public class RecipeController extends MenuController{
     @FXML
     private TextField recipeTextOrigin;
     
+    @FXML
+    private Label recipeIngredientLabel;
+    
     /**
      * default constructor, no recipe selected -> new recipe
      */
@@ -73,10 +78,12 @@ public class RecipeController extends MenuController{
     }
     
     /**
-     * @param recipe to be modified -> editing recipe
+     * @param recipe to be modified
+     * @param modifiable false if cannot modify recipe
      */
-    public RecipeController(Recipe recipe) {
+    public RecipeController(Recipe recipe, boolean modifiable) {
         this.recipe = recipe;
+        this.modifiable = modifiable;
     }
     
     @FXML
@@ -97,11 +104,27 @@ public class RecipeController extends MenuController{
     private void initialize() {
         storage = Main.storage;
         Platform.runLater(() -> {
+            recipeBtnConfirm.setDisable(modifiable);
+            recipeTextArea.setDisable(modifiable);
+            recipeTextName.setDisable(modifiable);
+            recipeTextOrigin.setDisable(modifiable);
+            recipeTextCreator.setDisable(modifiable);
+            recipeCB1.setDisable(modifiable);
+            recipeCB2.setDisable(modifiable);
+            recipeCB3.setDisable(modifiable);
+            recipeComboCourse.setDisable(modifiable);
+            ((Stage) btnReturn.getScene().getWindow()).getScene().getStylesheets().add("styles/recipe.css");
             recipeTextArea.setWrapText(true);
             recipeCB1.clear();
             setIngredients();
-            if (recipe != null) setData();
             storage = Main.storage;
+            recipeComboCourse.add("Alkuruoka");
+            recipeComboCourse.add("P‰‰ruoka");
+            recipeComboCourse.add("J‰lkiruoka");
+            recipeComboCourse.add("Muu");
+            if (recipe != null) setData();
+            disableMenuButtons();
+            if (storage.getIngredients().count() == storage.getIngredients().getMax()) btnNewIngredient.setDisable(true);
         });    
     }
     
@@ -132,6 +155,7 @@ public class RecipeController extends MenuController{
                 cbc.add(ingredients.getMatrix()[i][j].getName(), ingredients.getMatrix()[i][j]);
             }
         }
+        recipeIngredientLabel.setText(ingredients.count() + "/" + ingredients.getMax());
     }
     
     /**
@@ -139,10 +163,11 @@ public class RecipeController extends MenuController{
      * If recipe has Ingredients that aren't in checkBoxes, adds those Ingredients if possible.
      */
     public void setData() {
-        recipeTextName.setText(recipe.getName());
+        recipeTextName.setText(recipe.getName(true));
         recipeTextOrigin.setText(recipe.getOrigin());
         recipeTextCreator.setText(recipe.getCreator());
-        recipeTextArea.setText(recipe.getGuide());      
+        recipeTextArea.setText(recipe.getGuide());    
+        for (int i = 0; i < recipeComboCourse.getObjects().size(); i++)if (recipe.getCourse().equals(recipeComboCourse.getObjects().get(i))) recipeComboCourse.setSelectedIndex(i);
         for (int j = 0; j < recipe.getIngredients().size(); j++) {
             Ingredient i = recipe.getIngredients().get(j);
             if (recipeCB1.getObjects().contains(i)) {
@@ -203,6 +228,8 @@ public class RecipeController extends MenuController{
                 cbc.add(ingredient.getName(), ingredient);
             }
         }
+        if (storage.getIngredients().count() == storage.getIngredients().getMax()) btnNewIngredient.setDisable(true);
+        setIngredients();
     }
     
     /**
@@ -228,6 +255,7 @@ public class RecipeController extends MenuController{
                 }
             }
         }
+        if (btnNewIngredient.isDisabled()) btnNewIngredient.setDisable(false);
         setIngredients();
     }
     
@@ -240,7 +268,7 @@ public class RecipeController extends MenuController{
             return;
         }
         if (emptyFields()) {
-            Dialogs.showMessageDialog("Virhe: tyhj‰ tekstikentt‰");
+            Dialogs.showMessageDialog("Virhe: tyhj‰ tekstikentt‰ tai ei valittua ruokalajia");
             return;
         }
         int id = -1;
@@ -251,7 +279,6 @@ public class RecipeController extends MenuController{
             storage.deleteRecipe(id);
             text = text.replace("Lis‰tty", "Muokattu");
         }
-        // TODO COMBOBOX FOR COURSE
         ArrayList<Ingredient> selected = (ArrayList<Ingredient>) recipeCB1.getSelectedObjects();
         for (Ingredient i : (ArrayList<Ingredient>) recipeCB2.getSelectedObjects()) {
             selected.add(i);
@@ -260,10 +287,10 @@ public class RecipeController extends MenuController{
             selected.add(i);
         }
         recipe = new Recipe(id, recipeTextName.getText().trim(), recipeTextCreator.getText().trim(),
-                recipeTextOrigin.getText().trim(), "not implemented course", 
+                recipeTextOrigin.getText().trim(), recipeComboCourse.getSelectedObject(), false,
                 recipeTextArea.getText().trim(), selected);
         storage.addRecipe(recipe);
-        text = text.replace("nimi", recipe.getName());
+        text = text.replace("nimi", recipe.getName(true));
         Dialogs.showMessageDialog(text);
         resetFields();
     }
@@ -276,6 +303,7 @@ public class RecipeController extends MenuController{
         if(recipeTextCreator.getText().trim().isEmpty()) return true;
         if(recipeTextOrigin.getText().trim().isEmpty()) return true;
         if(recipeTextArea.getText().trim().isEmpty()) return true;
+        if(recipeComboCourse.getSelectedObject() == null) return true;
         return false;
     }
     
@@ -299,7 +327,18 @@ public class RecipeController extends MenuController{
         recipeTextOrigin.setText("");
         recipeTextCreator.setText("");
         recipe = null;
-        recipeComboCourse.setValue(null);
-        // TODO: reset checkBoxes
+        recipeComboCourse.setSelectedIndex(0);
+        setIngredients();
+    }
+    
+    @FXML
+    void help(ActionEvent event) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Help");
+        alert.setContentText("T‰ss‰ n‰kym‰ss‰ voit lis‰t‰ reseptej‰ ja muokata valittuja reseptej‰. "
+                + "Lis‰ksi voit lis‰t‰ ja poistaa ainesosia 30. kappaleeseen asti. ");
+        alert.setHeaderText(null);
+        alert.getDialogPane().setPrefSize(400, -1);
+        alert.showAndWait();
     }
 }

@@ -4,6 +4,7 @@
 package lib;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * @author tietokone
@@ -45,6 +46,7 @@ public class Recipe implements Comparable<Recipe> {
      * @param creator of course
      * @param origin country
      * @param course 0 = appetizer, 1 = main, 2 = dessert
+     * @param starred true if starred
      * @param guide to follow
      * @param ingredients of course
      * @example
@@ -53,7 +55,7 @@ public class Recipe implements Comparable<Recipe> {
      * r.toString() === "1 | perunasalaatti | atria | suomi | p‰‰ruoka | ohje";
      * </pre>
      */
-    public Recipe(int id, String name, String creator, String origin, String course, String guide, ArrayList<Ingredient> ingredients) {
+    public Recipe(int id, String name, String creator, String origin, String course, boolean starred, String guide, ArrayList<Ingredient> ingredients) {
 
         if (id == -1) {            
             this.id = next_id;
@@ -61,7 +63,8 @@ public class Recipe implements Comparable<Recipe> {
         } else {
             this.id = id;
         }
-        this.name = name.trim();
+        this.starred = starred;
+        this.name = name.trim().toLowerCase();
         this.setCreator(creator.trim());
         this.setOrigin(origin.trim());
         this.setCourse(course);
@@ -72,20 +75,19 @@ public class Recipe implements Comparable<Recipe> {
     
     @Override
     public String toString() {
-        return String.format("%d | %s | %s | %s | %s | %s", id, name, creator, origin, course, guide);
+        return String.format("%d | %s | %s | %s | %s | %s | %s", id, name, creator, origin, course, starred, guide.replace("\n", "%NEWLINE%"));
     }
     
     /**
      * Prints the guide to console
      */
     public void printRecipe() {
-        System.out.printf("%s: (%s, %s) [%s]\n\n", name, creator, origin, course);
+        System.out.printf("%s: (%s, %s) [%s]\n\n", getName(true), creator, origin, course);
         System.out.printf("Ainesosat:\n");
         for (Ingredient i : ingredients) {
             System.out.printf("\t%s\n", i.toString());
         }
         System.out.println("\n" + guide);
-
     }
 
     /**
@@ -115,9 +117,11 @@ public class Recipe implements Comparable<Recipe> {
     }
     
     /**
+     * @param capitalized if true
      * @return name of Recipe
      */
-    public String getName() {
+    public String getName(boolean capitalized) {
+        if (capitalized) return name.substring(0,1).toUpperCase() + name.substring(1);
         return name;
     }
 
@@ -125,7 +129,7 @@ public class Recipe implements Comparable<Recipe> {
      * @param name for Recipe
      */
     public void setName(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 
     /**
@@ -207,6 +211,7 @@ public class Recipe implements Comparable<Recipe> {
      */
     public void setStarred(Boolean b) {
         starred = b;
+        System.out.printf("%s | starred: %b\n", name, starred);
     }
 
     /**
@@ -244,17 +249,51 @@ public class Recipe implements Comparable<Recipe> {
      */
     public static Recipe parse(String s) throws ParseException {
         String[] arr = s.split("\\|");
-        if (arr.length != 6) throw new ParseException("Virhe reseptien lukemisessa: tarkista rivin '|' merkkien m‰‰r‰. Oli " + arr.length + " alkiota. Piti olla 6.");
+        if (arr.length != 7) throw new ParseException("Virhe reseptien lukemisessa: tarkista rivin '|' merkkien m‰‰r‰. Oli " + arr.length + " alkiota. Piti olla 7.");
         try {
             Integer.parseInt(arr[0].trim());
         } catch (Exception e) {
             throw new ParseException("Virhe ainesosien lukemisessa: ID ei ole laillinen numero");
         }
-        return new Recipe(Integer.parseInt(arr[0].trim()), arr[1].trim(), arr[2].trim(), arr[3].trim(), arr[4].trim(), arr[5].trim(), new ArrayList<Ingredient>());
+        boolean star = true;
+        if (arr[5].trim().equals("false")) star = false;
+        return new Recipe(Integer.parseInt(arr[0].trim()), arr[1].trim(), arr[2].trim(), arr[3].trim(), arr[4].trim(), star, arr[6].trim().replace("%NEWLINE%", "\n"), new ArrayList<Ingredient>());
     }
     
-    @Override
-    public int compareTo(Recipe r) {
+    /**
+     * @param r recipe to be compared to
+     * @return order of recipes
+     */
+    public int compareIdOld(Recipe r) {
         return id - r.id;
+    }
+    
+    /**
+     * @param r recipe to be compared to
+     * @return order of recipes
+     */
+    public int compareIdNew(Recipe r) {
+        return r.id - id;
+    }
+    
+    /**
+     * @param r recipe to be compared to
+     * @return order of recipes
+     */
+    public int compareAlpha(Recipe r) {
+        return name.compareTo(r.name);
+    }
+    
+    /**
+     * @param r recipe to be compared to
+     * @return order of recipes
+     */
+    public int compareZulu(Recipe r) {
+        return r.name.compareTo(name);
+    }
+
+    @Override
+    public int compareTo(Recipe arg0) {
+        return id - arg0.id;
     }
 }

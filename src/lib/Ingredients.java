@@ -473,4 +473,8 @@ public class Ingredients {
         i.put(new Ingredient(1, "peruna"));
         System.out.println(i.get("peruna"));
     }
+    
+    public int getMax() {
+        return cols * maxRows;
+    }
 }
